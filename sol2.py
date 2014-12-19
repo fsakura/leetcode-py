@@ -69,3 +69,5 @@ if __name__ == '__main__':
   print Solution().findMedianSortedArrays(A, B)
   #print Solution().get_median(A, 0, 5)#len(A)-1)
   #print Solution().median(A, 0, len(A)-1, B, 0, len(B)-1)
+
+
