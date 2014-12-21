@@ -24,10 +24,11 @@ class Solution:
 
     lenA = len(A)
     lenB = len(B)
-    k = ((lenA + lenB)/2 + 1) if (1 == (lenA + lenB)/2) else ((lenA + lenB)/2)
+    k = ((lenA + lenB)/2 + 1) if (1 == (lenA + lenB)%2) else ((lenA + lenB)/2)
     return Solution().findKthSmallest(A, 0, len(A)-1, B, 0, len(B)-1, k)
 
   def findKthSmallest(self, A, sa, ea, B, sb, eb, k):
+    print "sa: " + str(sa) + " ea: " + str(ea) + " sb: " + str(sb) + " eb: " + str(eb)
     m = ea - sa + 1
     n = eb - sb + 1
 
@@ -47,15 +48,19 @@ class Solution:
     # i-1/j-1 will be -1 if i/j=0
     ai_1 = (-sys.maxint-1) if(0 == i) else A[sa + i-1]
     bj_1 = (-sys.maxint-1) if(0 == j)else B[sb + j-1]
-    ai = sys.maxint if (i == ea - sa + 1) else A[i]
-    bj = sys.maxint if (j == eb - sb + 1) else B[j]
+    ai = sys.maxint if (i == ea - sa + 1) else A[sa+i]
+    bj = sys.maxint if (j == eb - sb + 1) else B[sb+j]
 
     print "ai_1:" + str(ai_1) + " ai:" + str(ai) + " bj_1:" + str(bj_1) + " bj:" + str(bj)
 
     if(bj_1 <= ai and ai <= bj):
-      return ai
+      if((len(A)+len(B))%2 == 1): return ai
+      if(sa+i == len(A)-1): return (ai+bj)/2.0
+      return (ai+(min(A[sa+i+1], bj)))/2.0
     elif(ai_1 <= bj and bj <= ai):
-      return bj
+      if((len(A)+len(B))%2 == 1): return bj
+      if(sb+j == len(B)-1): return (ai+bj)/2.0
+      return (bj+(min(B[sb+j+1], ai)))/2.0
 
     # if ai < bj lower part of ai and upper part of bj can be skipped
     if(ai < bj):
@@ -64,8 +69,16 @@ class Solution:
       return Solution().findKthSmallest(A, sa, sa+i, B, sb+j+1, eb, k-j-1)
 
 if __name__ == '__main__':
-  A = [1, 4, 6, 8, 9, 11, 15]
-  B = [2, 3, 5, 6, 7, 8, 11, 12]
+  #A = [1, 4, 6, 8, 9, 11, 15]
+  #B = [2, 3, 5, 6, 7, 8, 11, 12]
+  A = [1,3,5,8]
+  B = [2,4,6,7,9,10]
+  A = [1,2,4,8,9,10]
+  B = [3,5,6,7]
+  A = [1,2,7,8,9,10]
+  B = [3,4,5,6]
+  A = [1]
+  B = [1]
   print Solution().findMedianSortedArrays(A, B)
   #print Solution().get_median(A, 0, 5)#len(A)-1)
   #print Solution().median(A, 0, len(A)-1, B, 0, len(B)-1)
